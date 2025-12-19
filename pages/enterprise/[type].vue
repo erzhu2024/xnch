@@ -65,23 +65,22 @@ const pagination = reactive({
     total: 0
 })
 
-// 模拟数据获取
 const getList = async () => {
     const res = await getEnterpriseProducts({
         ...filterForm,
         page: pagination.page,
         size: pagination.size
     })
-    productList.value = res.list
-    pagination.total = res.total
+    productList.value = res.data.list
+    pagination.total = res.data.total
 }
 
-const addToCart = (item) => {
+const addToCart = (item: any) => {
     // 加入采购清单逻辑
     console.log('加入采购清单:', item)
 }
 
-const handlePageChange = (page) => {
+const handlePageChange = (page: any) => {
     pagination.page = page
     getList()
 }

@@ -1,29 +1,29 @@
-export const enterpriseGrainMock = [
+export const enterpriseAquaticMock = [
     {
-        id: 1,
-        name: '一级籼米',
-        image: '/images/products/rice-1.jpg',
-        price: 4.5,
+        id: 101,
+        name: '鲜活鲈鱼',
+        image: '/images/products/fish-1.jpg',
+        price: 28.5,
         unit: 'kg',
-        stock: 10000,
-        spec: '优质籼米，保质期12个月'
+        stock: 300,
+        spec: '现捕现发，单条约500g'
     },
     {
-        id: 2,
-        name: '东北珍珠米',
-        image: '/images/products/rice-2.jpg',
-        price: 5.2,
+        id: 102,
+        name: '有机香菇',
+        image: '/images/products/mushroom-1.jpg',
+        price: 12.8,
         unit: 'kg',
-        stock: 8500,
-        spec: '圆粒大米，黑龙江产地'
+        stock: 1200,
+        spec: '人工培育，新鲜采摘'
     },
     {
-        id: 3,
-        name: '有机小麦粉',
-        image: '/images/products/flour-1.jpg',
-        price: 6.8,
+        id: 103,
+        name: '生态甲鱼',
+        image: '/images/products/turtle-1.jpg',
+        price: 168.0,
         unit: 'kg',
-        stock: 5000,
-        spec: '高筋面粉，适合面包制作'
+        stock: 50,
+        spec: '野外散养，3年以上生长周期'
     }
 ]

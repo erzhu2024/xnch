@@ -1,21 +1,26 @@
 // pc/api/enterprise.ts
-import { mockConfig } from '@/utils/mock'
-// 动态导入中小企业采购数据
+import { mockConfig, createMockResponse } from '@/utils/mock'
+// 直接导入各子模块数据
+import { enterpriseGrainMock } from '@/api/data/enterprise/grain'
+import { enterpriseAquaticMock } from '@/api/data/enterprise/aquatic'
+import { enterpriseCateringMock } from '@/api/data/enterprise/catering'
+
+// 映射关系对象
 const enterpriseDataMap = {
-    grain: () => import('@/api/data/enterprise/grain').then((m) => m.enterpriseGrainMock),
-    aquatic: () => import('@/api/data/enterprise/aquatic').then((m) => m.enterpriseGrainMock),
-    catering: () => import('@/api/data/enterprise/catering').then((m) => m.enterpriseCateringMock)
+    grain: enterpriseGrainMock,
+    aquatic: enterpriseAquaticMock,
+    catering: enterpriseCateringMock
 }
 
 export async function getEnterpriseProducts(params: any) {
     if (mockConfig.purchase.switch === true) {
+        // 默认使用粮食类数据
         const type = params.type || 'grain'
-        const loadData = enterpriseDataMap[type as keyof typeof enterpriseDataMap]
-        console.log('loadData', loadData)
-        if (loadData) {
-            const mockData = await loadData()
+        // 获取对应类型的模拟数据
+        const mockData = enterpriseDataMap[type as keyof typeof enterpriseDataMap]
+        console.log('mockData', mockData)
+        if (mockData) {
             return createMockResponse(mockData)
-            console.log('mockData', mockData)
         }
     }
     return $request.get({ url: '/purchase/enterprise', params })
