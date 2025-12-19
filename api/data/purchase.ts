@@ -1,5 +1,5 @@
 // 模拟数据响应示例（实际项目中由后端提供）
-export const purchaseData = {
+export const purchaseGrainData = {
     code: 200,
     msg: 'success',
     data: {

@@ -5,7 +5,7 @@ node_modules
 .cache
 .output
 .vite
-.env
-.env.development
-.env.production
+#.env
+#.env.development
+#.env.production
 dist
