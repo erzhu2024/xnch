@@ -106,13 +106,17 @@ const getApiMethod = () => {
 // 获取列表数据
 const getList = async () => {
     const apiMethod = getApiMethod()
-    const res = await apiMethod({
-        ...filterForm,
-        page: pagination.page,
-        size: pagination.size
-    })
-    productList.value = res.list
-    pagination.total = res.total
+    try {
+        const res = await apiMethod({
+            ...filterForm,
+            page: pagination.page,
+            size: pagination.size
+        })
+        productList.value = res.data.list || []
+        pagination.total = res.data.total || 0
+    } catch (err) {
+        console.error('接口调用失败:', err) // 捕获错误
+    }
 }
 
 // 处理分类切换
