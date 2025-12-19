@@ -25,9 +25,9 @@ export const NAVBAR = [
         name: '人才供应',
         path: '/talent',
         children: [
-            { name: '优质岗位', path: '/talent/jobs' },
-            { name: '企业招聘', path: '/talent/recruit' },
-            { name: '人才库', path: '/talent/pool' }
+            { name: '优质岗位', path: 'jobs' },
+            { name: '企业招聘', path: 'recruit' },
+            { name: '人才库', path: 'pool' }
         ]
     },
     {
