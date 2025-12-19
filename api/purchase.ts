@@ -1,7 +1,11 @@
 // pc/api/purchase.ts
-import { enterpriseProductsMock } from '@/api/data/purchase'
+import { createMockResponseObject, mockConfig } from '@/utils/mock'
+import { purchaseGrainData } from '@/api/data/purchase'
 
 export function getEnterpriseProducts(params: any) {
+    if (mockConfig.purchase.switch === true) {
+        return createMockResponseObject(purchaseGrainData)
+    }
     return $request.get({ url: '/purchase/enterprise', params })
 }
 
