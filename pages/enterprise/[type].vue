@@ -50,7 +50,7 @@
 <script lang="ts" setup>
 import { ref, reactive } from 'vue'
 import { useRoute } from 'vue-router'
-import { getEnterpriseProducts } from '~/api/enterprise' // 模拟接口
+import { getGrainEnterpriseProducts } from '~/api/enterprise' // 模拟接口
 
 const route = useRoute()
 const filterForm = reactive({
@@ -66,7 +66,7 @@ const pagination = reactive({
 })
 
 const getList = async () => {
-    const res = await getEnterpriseProducts({
+    const res = await getGrainEnterpriseProducts({
         ...filterForm,
         page: pagination.page,
         size: pagination.size
