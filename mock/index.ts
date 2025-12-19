@@ -1,21 +1,19 @@
-// mock/index.ts
-const mockModules = import.meta.glob('./**/*.ts', { eager: true })
-const mockMap = new Map<string, any>()
+// xnch/mock/index.ts
+import { createProdMockServer } from 'vite-plugin-mock/es/createProdMockServer'
+import { MockMethod } from 'vite-plugin-mock'
 
-// 遍历所有mock文件，生成路径映射
-Object.keys(mockModules).forEach((filePath) => {
-    // 解析文件路径为接口路径（如：mock/purchase/enterprise.ts → /purchase/enterprise）
-    const apiPath = filePath
-        .replace(/^mock\//, '') // 去掉mock前缀
-        .replace(/\.ts$/, '') // 去掉文件后缀
-        .replace(/\/index$/, '') // 支持index.ts作为目录默认接口
-        .replace(/\\/g, '/') // 处理windows路径
+// 自动导入 mock 目录下所有 .ts 文件（排除 index.ts 自身）
+const modules = import.meta.glob('./**/*.ts', { eager: true, import: 'default' })
 
-    // 导入mock数据（要求每个文件必须导出mockData）
-    const module = mockModules[filePath] as { mockData: any }
-    if (module.mockData) {
-        mockMap.set(`/${apiPath}`, module.mockData)
-    }
+// 收集所有 Mock 接口
+const mockModules: MockMethod[] = []
+Object.keys(modules).forEach((key) => {
+    if (key === './index.ts') return // 跳过入口文件
+    const module = modules[key] as MockMethod[]
+    mockModules.push(...module)
 })
 
-export default mockMap
+// 创建 Mock 服务
+export function setupMockServer() {
+    createProdMockServer(mockModules)
+}

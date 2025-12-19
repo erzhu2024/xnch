@@ -4,12 +4,13 @@ import Mock from 'mockjs'
 
 export default [
     {
-        url: '/pc/index', // 匹配 api/shop.ts 中的 getIndex 接口
+        url: '/home/data', // 对应 api/home.ts 中的 getHomeData
         method: 'get',
         response: () => ({
             code: 1,
             msg: 'success',
             data: {
+                // 轮播图数据（匹配首页轮播组件）
                 bannerList: Mock.mock({
                     'items|3': [
                         {
@@ -17,10 +18,11 @@ export default [
                             image: '@image(1200x500, @color, 采购平台)',
                             title: '@ctitle(8, 12)',
                             subtitle: '@csentence(15, 30)',
-                            link: '@url'
+                            link: '/enterprise' // 跳转链接
                         }
                     ]
                 }).items,
+                // 热门商品（匹配热门采购商品区块）
                 hotProducts: Mock.mock({
                     'items|4': [
                         {
@@ -32,6 +34,7 @@ export default [
                         }
                     ]
                 }).items,
+                // 供应商数据（匹配供应商推荐区块）
                 suppliers: Mock.mock({
                     'items|4': [
                         {

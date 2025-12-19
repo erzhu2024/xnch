@@ -6,6 +6,6 @@ node_modules
 .output
 .vite
 .env
-.env.development
-.env.production
+# .env.development
+# .env.production
 dist

@@ -1,10 +1,9 @@
 // xnch/mock/app.ts
 import { MockMethod } from 'vite-plugin-mock'
-import Mock from 'mockjs'
 
 export default [
     {
-        url: '/pc/config', // 匹配 api/app.ts 中的 getConfig 接口
+        url: '/pc/config', // 对应 api/app.ts 中的 getConfig
         method: 'get',
         response: () => ({
             code: 1,
@@ -19,6 +18,14 @@ export default [
                 },
                 siteStatistics: {
                     clarity_code: 'mock-clarity-code'
+                },
+                copyright: [
+                    { key: '版权所有', value: '#' },
+                    { key: '备案号', value: '#' }
+                ],
+                qrcode: {
+                    mnp: '/images/mnp-qrcode.png', // 小程序码
+                    oa: '/images/oa-qrcode.png' // 公众号码
                 }
             }
         })
