@@ -34,17 +34,17 @@ export default defineNuxtConfig({
     // 新增：Mock 配置
     vite: {
         plugins: [
-            // 只有当 NUXT_PUBLIC_USE_MOCK 为 true 时才启用 mock 插件
+            // 环境变量控制是否启用 mock
             envConfig.useMock &&
                 viteMockServe({
-                    mockPath: 'mock', // 固定指向 mock 目录
-                    localEnabled: true, // 由环境变量控制总开关，这里固定为 true
-                    prodEnabled: false, // 生产环境始终禁用（即使 useMock 为 true）
+                    mockPath: 'mock', // mock 文件目录
+                    devEnabled: true, // 开发环境启用（替代 localEnabled）
+                    prodEnabled: false, // 生产环境禁用
                     injectCode: `
           import { setupMockServer } from './mock/index';
           setupMockServer();
         `
                 })
-        ].filter(Boolean) // 过滤掉 false 值，避免插件报错
+        ].filter(Boolean) // 过滤 false 值
     }
 })
