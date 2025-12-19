@@ -11,7 +11,6 @@ import { merge } from 'lodash-es'
 import { isFunction } from '../validate'
 import { RequestMethodsEnum } from '@/enums/requestEnums'
 import { objectToQuery } from '../util'
-import mockMap from '@/mock'
 
 export class Request {
     private requestOptions: RequestOptions

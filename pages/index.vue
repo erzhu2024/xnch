@@ -1,4 +1,3 @@
-<!-- pc pc/pages/index.vue -->
 <template>
     <div class="index-page">
         <!-- 头部轮播 -->
@@ -12,60 +11,6 @@
                 </div>
             </el-carousel-item>
         </el-carousel>
-
-        <!-- 资讯板块（从index copy.vue迁移） -->
-        <div class="container mx-auto py-16">
-            <div class="flex">
-                <div class="w-[750px] h-[340px] flex-none mr-5">
-                    <ElCarousel
-                        v-if="getSwiperData.enabled"
-                        class="w-full"
-                        trigger="click"
-                        height="340px"
-                    >
-                        <ElCarouselItem v-for="item in showList" :key="item.id">
-                            <NuxtLink :to="item.link.path" target="_blank">
-                                <ElImage
-                                    class="w-full h-full rounded-[8px] bg-white overflow-hidden"
-                                    :src="appStore.getImageUrl(item.image)"
-                                    fit="contain"
-                                />
-                            </NuxtLink>
-                        </ElCarouselItem>
-                    </ElCarousel>
-                </div>
-                <InformationCard
-                    link="/information/new"
-                    class="flex-1 min-w-0"
-                    header="最新资讯"
-                    :data="pageData.new"
-                    :show-time="false"
-                />
-            </div>
-
-            <div class="mt-5 flex">
-                <InformationCard
-                    link="/information"
-                    class="w-[750px] flex-none mr-5"
-                    header="全部资讯"
-                    :data="pageData.all"
-                    :only-title="false"
-                />
-                <InformationCard
-                    link="/information/hot"
-                    class="flex-1"
-                    header="热门资讯"
-                    :data="pageData.hot"
-                    :only-title="false"
-                    image-size="mini"
-                    :show-author="false"
-                    :show-desc="false"
-                    :show-click="false"
-                    :border="false"
-                    :title-line="2"
-                />
-            </div>
-        </div>
 
         <!-- 核心业务板块 -->
         <div class="business-section container mx-auto py-16">
@@ -218,15 +163,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { getHomeData } from '@/api/home' // 新增首页API
-import { getIndex } from '@/api/shop' // 保留原有shop接口
-import { ElCarousel, ElCarouselItem, ElImage } from 'element-plus'
-import InformationCard from '@/components/information/card.vue'
-import { useAppStore } from '~~/stores/app'
 
-// 获取首页主数据
-const { data: homeData } = await useAsyncData('homeData', () => getHomeData(), {
+// 模拟数据（实际项目中通过API获取）
+const { data } = await useAsyncData('homeData', () => getHomeData(), {
     default: () => ({
         bannerList: [],
         hotProducts: [],
@@ -234,37 +175,11 @@ const { data: homeData } = await useAsyncData('homeData', () => getHomeData(), {
     })
 })
 
-// 获取资讯相关数据（从index copy.vue迁移）
-const { data: pageData } = await useAsyncData('pageData', () => getIndex(), {
-    default: () => ({
-        all: [],
-        hot: [],
-        new: [],
-        page: {}
-    })
-})
+const bannerList = ref(data.value.bannerList)
+const hotProducts = ref(data.value.hotProducts)
+const suppliers = ref(data.value.suppliers)
 
-// 轮播图数据
-const bannerList = ref(homeData.value.bannerList)
-const hotProducts = ref(homeData.value.hotProducts)
-const suppliers = ref(homeData.value.suppliers)
-
-// 处理资讯轮播数据（从index copy.vue迁移）
-const appStore = useAppStore()
-const getSwiperData = computed(() => {
-    try {
-        const data = JSON.parse(pageData.value.page.data)
-        return data.find((item) => item.name === 'pc-banner')?.content || {}
-    } catch (error) {
-        return {}
-    }
-})
-
-const showList = computed(() => {
-    return getSwiperData.value?.data || []
-})
-
-const addToCart = (item) => {
+const addToCart = (item: any) => {
     // 加入采购清单逻辑
     console.log('加入采购清单:', item)
 }
