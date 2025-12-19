@@ -34,17 +34,15 @@ export default defineNuxtConfig({
     // 新增：Mock 配置
     vite: {
         plugins: [
-            // 环境变量控制是否启用 mock
-            envConfig.useMock &&
-                viteMockServe({
-                    mockPath: 'mock', // mock 文件目录
-                    devEnabled: true, // 开发环境启用（替代 localEnabled）
-                    prodEnabled: false, // 生产环境禁用
-                    injectCode: `
+            viteMockServe({
+                mockPath: 'mock', // Mock文件目录
+                devEnabled: process.env.NODE_ENV === 'development', // 开发环境启用
+                prodEnabled: false, // 生产环境禁用
+                injectCode: `
           import { setupMockServer } from './mock/index';
           setupMockServer();
         `
-                })
+            })
         ].filter(Boolean) // 过滤 false 值
     }
 })
