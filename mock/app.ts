@@ -13,7 +13,12 @@ export default [
                 website: {
                     pc_title: '采购平台（Mock数据）',
                     pc_ico: '/favicon.ico'
-                }
+                },
+                login: { needCaptcha: false },
+                copyright: [
+                    { key: '版权 2023 采购平台', value: '#' },
+                    { key: 'ICP备案号', value: '#' }
+                ]
             }
         })
     }

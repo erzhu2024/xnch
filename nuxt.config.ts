@@ -23,19 +23,20 @@ export default defineNuxtConfig({
     ssr: !!envConfig.ssr,
     // 禁用预渲染（避免500报错）
     nitro: {
+        // 使用正确的配置方式禁用预渲染
         prerender: {
-            enabled: false
+            crawlLinks: false
         },
         // 解决兼容性警告
-        compatibilityDate: '2025-12-15'
+        compatibilityDate: '2025-12-15',
+        // 确保静态产物输出到 .output/public
+        output: {
+            dir: path.resolve(__dirname, '.output/public')
+        }
     },
     // 禁用实验性payload提取（避免警告）
     experimental: {
         payloadExtraction: false
-    },
-    // 确保静态产物输出到 .output/public
-    output: {
-        publicDir: path.resolve(__dirname, '.output/public')
     },
     // 新增：Mock 配置
     vite: {
@@ -44,13 +45,11 @@ export default defineNuxtConfig({
             ...(process.env.NODE_ENV === 'development'
                 ? [
                       viteMockServe({
-                          mockPath: 'mock', // 指定 Mock 文件目录
-                          localEnabled: true, // 开发环境启用
-                          prodEnabled: false, // 生产环境禁用
-                          injectCode: `
-                            import { setupMockServer } from './mock';
-                            setupMockServer();
-                          ` // 注入 Mock 初始化代码
+                          mockPath: 'mock', // Mock 文件目录
+                          localEnabled: true,
+                          prodEnabled: false,
+                          // 禁用自动导入，使用手动导入的 Mock 配置
+                          watchFiles: false
                       })
                   ]
                 : [])
