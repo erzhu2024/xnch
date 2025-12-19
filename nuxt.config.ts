@@ -8,9 +8,9 @@ export default defineNuxtConfig({
     modules: [
         '@pinia/nuxt',
         '@nuxtjs/tailwindcss',
-        '@element-plus/nuxt',
+        '@element-plus/nuxt'
         // 开发环境启用 Vite Mock 插件
-        ...(process.env.NODE_ENV === 'development' ? ['vite-plugin-mock/nuxt'] : [])
+        //...(process.env.NODE_ENV === 'development' ? ['vite-plugin-mock/nuxt'] : [])
     ],
     app: {
         baseURL: envConfig.baseUrl
@@ -40,12 +40,17 @@ export default defineNuxtConfig({
     // 新增：Mock 配置
     vite: {
         plugins: [
+            // 仅在开发环境配置 Mock 插件
             ...(process.env.NODE_ENV === 'development'
                 ? [
                       viteMockServe({
                           mockPath: 'mock', // 指定 Mock 文件目录
                           localEnabled: true, // 开发环境启用
-                          prodEnabled: false // 生产环境禁用
+                          prodEnabled: false, // 生产环境禁用
+                          injectCode: `
+                            import { setupMockServer } from './mock';
+                            setupMockServer();
+                          ` // 注入 Mock 初始化代码
                       })
                   ]
                 : [])
