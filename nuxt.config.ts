@@ -42,7 +42,7 @@ export default defineNuxtConfig({
         plugins: [
             ...(process.env.NODE_ENV === 'development'
                 ? [
-                      require('vite-plugin-mock').default({
+                      viteMockServe({
                           mockPath: 'mock', // 指定 Mock 文件目录
                           localEnabled: true, // 开发环境启用
                           prodEnabled: false // 生产环境禁用
