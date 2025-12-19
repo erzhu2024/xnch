@@ -50,7 +50,7 @@
 <script lang="ts" setup>
 import { ref, reactive } from 'vue'
 import { useRoute } from 'vue-router'
-import { getEnterpriseProducts } from '@/api/purchase' // 模拟接口
+import { getEnterpriseProducts } from '~/api/enterprise' // 模拟接口
 
 const route = useRoute()
 const filterForm = reactive({

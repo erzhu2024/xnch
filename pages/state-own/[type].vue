@@ -64,7 +64,7 @@
 
 <script lang="ts" setup>
 import { ref, reactive } from 'vue'
-import { getStateOwnMaterials } from '@/api/purchase' // 模拟接口
+import { getStateOwnMaterials } from '~/api/enterprise' // 模拟接口
 
 const showCustomDialog = ref(false)
 const customForm = reactive({
