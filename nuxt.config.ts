@@ -33,16 +33,13 @@ export default defineNuxtConfig({
     },
     // 新增：Mock 配置
     vite: {
-        plugins: [
-            viteMockServe({
-                mockPath: 'mock', // Mock文件目录
-                devEnabled: process.env.NODE_ENV === 'development', // 开发环境启用
-                prodEnabled: false, // 生产环境禁用
-                injectCode: `
-          import { setupMockServer } from './mock/index';
-          setupMockServer();
-        `
-            })
-        ].filter(Boolean) // 过滤 false 值
+        define: {
+            'process.env': process.env // 暴露环境变量
+        },
+        server: {
+            fs: {
+                allow: [process.cwd()] // 允许 Vite 访问项目根目录
+            }
+        }
     }
 })

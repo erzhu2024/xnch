@@ -1,4 +1,7 @@
 import { createRequest } from '~~/utils/http'
+import { getEnvConfig } from '~/nuxt/env'
+// 获取环境变量配置
+const envConfig = getEnvConfig()
 
 export default defineNuxtPlugin(() => {
     const request = createRequest()

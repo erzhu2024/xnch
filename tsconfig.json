@@ -1,4 +1,9 @@
 {
   // https://v3.nuxtjs.org/concepts/typescript
-  "extends": "./.nuxt/tsconfig.json"
+  "extends": "./.nuxt/tsconfig.json",
+  "compilerOptions": {
+    "target": "ESNext",  // 支持最新ES特性，包括import.meta
+    "module": "ESNext",  // 使用ES模块
+    "typeRoots": ["./node_modules/@types", "./types"]  // 保留之前的类型配置
+  }
 }
