@@ -1,4 +1,3 @@
-// https://v3.nuxtjs.org/api/configuration/nuxt.config
 import { viteMockServe } from 'vite-plugin-mock'
 import path from 'path'
 import { getEnvConfig } from './nuxt/env'
@@ -35,15 +34,17 @@ export default defineNuxtConfig({
     // 新增：Mock 配置
     vite: {
         plugins: [
-            viteMockServe({
-                mockPath: 'mock', // 固定指向 mock 目录
-                localEnabled: process.env.NODE_ENV === 'development', // 开发环境启用
-                prodEnabled: false, // 生产环境禁用
-                injectCode: `                     // 注入 Mock 服务
+            // 只有当 NUXT_PUBLIC_USE_MOCK 为 true 时才启用 mock 插件
+            envConfig.useMock &&
+                viteMockServe({
+                    mockPath: 'mock', // 固定指向 mock 目录
+                    localEnabled: true, // 由环境变量控制总开关，这里固定为 true
+                    prodEnabled: false, // 生产环境始终禁用（即使 useMock 为 true）
+                    injectCode: `
           import { setupMockServer } from './mock/index';
           setupMockServer();
         `
-            })
-        ]
+                })
+        ].filter(Boolean) // 过滤掉 false 值，避免插件报错
     }
 })
