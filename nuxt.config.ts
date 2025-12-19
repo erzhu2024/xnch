@@ -5,7 +5,13 @@ import { getEnvConfig } from './nuxt/env'
 const envConfig = getEnvConfig()
 export default defineNuxtConfig({
     css: ['@/assets/styles/index.scss'],
-    modules: ['@pinia/nuxt', '@nuxtjs/tailwindcss', '@element-plus/nuxt'],
+    modules: [
+        '@pinia/nuxt',
+        '@nuxtjs/tailwindcss',
+        '@element-plus/nuxt',
+        // 开发环境启用 Vite Mock 插件
+        ...(process.env.NODE_ENV === 'development' ? ['vite-plugin-mock/nuxt'] : [])
+    ],
     app: {
         baseURL: envConfig.baseUrl
     },
@@ -33,13 +39,16 @@ export default defineNuxtConfig({
     },
     // 新增：Mock 配置
     vite: {
-        define: {
-            'process.env': process.env // 暴露环境变量
-        },
-        server: {
-            fs: {
-                allow: [process.cwd()] // 允许 Vite 访问项目根目录
-            }
-        }
+        plugins: [
+            ...(process.env.NODE_ENV === 'development'
+                ? [
+                      require('vite-plugin-mock').default({
+                          mockPath: 'mock', // 指定 Mock 文件目录
+                          localEnabled: true, // 开发环境启用
+                          prodEnabled: false // 生产环境禁用
+                      })
+                  ]
+                : [])
+        ]
     }
 })
