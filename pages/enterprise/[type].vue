@@ -5,7 +5,11 @@
         <el-card shadow="never" class="mb-4">
             <el-form inline :model="filterForm">
                 <el-form-item label="产品类型">
-                    <el-select v-model="filterForm.category" placeholder="全部">
+                    <el-select
+                        v-model="filterForm.category"
+                        placeholder="全部"
+                        @change="handleCategoryChange"
+                    >
                         <el-option label="粮食类" value="grain" />
                         <el-option label="水产及特色农产品" value="aquatic" />
                         <el-option label="文旅餐饮物资" value="catering" />
@@ -48,41 +52,98 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from 'vue'
-import { useRoute } from 'vue-router'
-import { getGrainEnterpriseProducts } from '~/api/enterprise' // 模拟接口
+import { ref, reactive, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+// 导入细化后的接口方法
+import {
+    getGrainEnterpriseProducts,
+    getAquaticEnterpriseProducts,
+    getCateringEnterpriseProducts
+} from '@/api/enterprise'
+
+// 定义产品类型
+interface Product {
+    id: number
+    name: string
+    image: string
+    price: number
+    unit: string
+    stock: number
+    spec?: string
+}
 
 const route = useRoute()
+const router = useRouter()
+
+// 根据路由参数确定当前分类
 const filterForm = reactive({
-    category: route.params.type,
+    category: route.params.type as string,
     quantity: 0
 })
 
-const productList = ref([])
+const productList = ref<Product[]>([])
 const pagination = reactive({
     page: 1,
     size: 12,
     total: 0
 })
 
+// 根据分类获取对应接口方法
+const getApiMethod = () => {
+    switch (filterForm.category) {
+        case 'grain':
+            console.log('粮食类接口')
+            return getGrainEnterpriseProducts
+        case 'aquatic':
+            return getAquaticEnterpriseProducts
+        case 'catering':
+            return getCateringEnterpriseProducts
+        default:
+            return getGrainEnterpriseProducts // 默认返回粮食类接口
+    }
+}
+
+// 获取列表数据
 const getList = async () => {
-    const res = await getGrainEnterpriseProducts({
+    const apiMethod = getApiMethod()
+    const res = await apiMethod({
         ...filterForm,
         page: pagination.page,
         size: pagination.size
     })
-    productList.value = res.data.list
-    pagination.total = res.data.total
+    productList.value = res.list
+    pagination.total = res.total
 }
+
+// 处理分类切换
+const handleCategoryChange = (value: any) => {
+    // 切换分类时更新路由参数
+    router.push(`/enterprise/${value}`)
+    // 重置分页并重新获取数据
+    pagination.page = 1
+    getList()
+}
+
+// 处理分页变化
+const handlePageChange = (page: any) => {
+    pagination.page = page
+    getList()
+}
+
+// 监听路由参数变化，更新数据
+watch(
+    () => route.params.type,
+    (newType) => {
+        console.log('路由参数变化:', newType)
+        filterForm.category = newType as string
+        pagination.page = 1 // 重置分页
+        getList()
+    }
+)
 
 const addToCart = (item: any) => {
     // 加入采购清单逻辑
     console.log('加入采购清单:', item)
-}
-
-const handlePageChange = (page: any) => {
-    pagination.page = page
-    getList()
 }
 
 // 初始化加载
