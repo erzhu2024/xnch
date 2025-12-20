@@ -1,6 +1,6 @@
 <!-- xnch/pages/talent/pool.vue -->
 <template>
-    <div class="talent-pool">
+    <div class="talent-pool container mx-auto">
         <!-- 搜索筛选 -->
         <el-card shadow="never" class="mb-4">
             <el-form inline :model="searchForm">

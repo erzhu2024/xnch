@@ -1,6 +1,6 @@
 <!-- pc/pages/enterprise/[type].vue -->
 <template>
-    <div class="enterprise-purchase">
+    <div class="enterprise-purchase container mx-auto">
         <!-- 筛选区 -->
         <el-card shadow="never" class="mb-4">
             <el-form inline :model="filterForm">

@@ -1,5 +1,8 @@
 export const mockConfig = {
     // 接口模块开关配置
+    home: {
+        switch: true // 开启此接口的本地模拟
+    },
     purchase: {
         switch: true // 开启此接口的本地模拟
     },

@@ -1,5 +1,5 @@
 <template>
-    <main class="mx-auto w-[1200px] py-4">
+    <main class="mx-auto w-full">
         <div v-if="sidebar.length" class="mr-4 bg-white rounded-[8px] overflow-hidden">
             <Menu :menu="sidebar" :default-active="activeMenu" mode="vertical" />
         </div>

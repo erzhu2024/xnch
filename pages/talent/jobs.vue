@@ -1,6 +1,6 @@
 <!-- pc/pages/talent/jobs.vue -->
 <template>
-    <div class="talent-jobs">
+    <div class="talent-jobs container mx-auto">
         <!-- 搜索筛选 -->
         <el-card shadow="never" class="mb-4">
             <el-form inline :model="searchForm">

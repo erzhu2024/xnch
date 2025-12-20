@@ -1,16 +1,36 @@
 <template>
     <div class="index-page">
-        <!-- 头部轮播 -->
-        <el-carousel height="500px" class="home-carousel">
-            <el-carousel-item v-for="item in bannerList" :key="item.id">
-                <el-image :src="item.image" fit="cover" class="w-full h-full" />
-                <div class="carousel-desc">
-                    <h2>{{ item.title }}</h2>
-                    <p>{{ item.subtitle }}</p>
-                    <el-button type="primary" size="large" :to="item.link"> 立即查看 </el-button>
-                </div>
-            </el-carousel-item>
-        </el-carousel>
+        <!-- 轮播容器：移除多余的block类，直接控制轮播高度 -->
+        <div class="carousel-container">
+            <el-carousel
+                class="jz-carousel"
+                height="90vh"
+                autoplay
+                indicator-position="bottom-right"
+                arrow="hover"
+            >
+                <el-carousel-item v-for="(item, index) in bannerList" :key="index">
+                    <!-- 背景图片层：修复style绑定，添加核心样式类 -->
+                    <div class="carousel-bg" :style="{ backgroundImage: `url(${item.image})` }">
+                        <!-- 备用图片：如果背景图加载失败，el-image作为兜底 -->
+                        <el-image :src="item.image" fit="cover" class="w-full h-full" lazy-load />
+                    </div>
+                    <!-- 内容悬浮层：保留原有内容 -->
+                    <div class="carousel-content">
+                        <h2 class="carousel-title">{{ item.name || '默认标题' }}</h2>
+                        <p class="carousel-subtitle">{{ item.spec || '默认副标题' }}</p>
+                        <el-button
+                            type="primary"
+                            size="large"
+                            class="carousel-btn"
+                            :to="item.link || '#'"
+                        >
+                            {{ item.btnText || '立即查看' }}
+                        </el-button>
+                    </div>
+                </el-carousel-item>
+            </el-carousel>
+        </div>
 
         <!-- 核心业务板块 -->
         <div class="business-section container mx-auto py-16">
@@ -174,8 +194,8 @@ const { data } = await useAsyncData('homeData', () => getHomeData(), {
         suppliers: []
     })
 })
-
-const bannerList = ref(data.value.bannerList)
+//console.log('data', data.value.data.list)
+const bannerList = ref(data.value.data.list)
 const hotProducts = ref(data.value.hotProducts)
 const suppliers = ref(data.value.suppliers)
 
@@ -186,27 +206,52 @@ const addToCart = (item: any) => {
 </script>
 
 <style lang="scss" scoped>
-.home-carousel {
-    position: relative;
-    .carousel-desc {
-        position: absolute;
-        left: 10%;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #fff;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        h2 {
-            font-size: 40px;
-            margin-bottom: 20px;
-        }
-        p {
-            font-size: 18px;
-            margin-bottom: 30px;
-            max-width: 600px;
-        }
+// 轮播背景图层
+.carousel-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover; // 背景图铺满
+    background-position: center; // 背景图居中
+    z-index: 1;
+
+    // 隐藏el-image的默认占位，仅作为背景图兜底
+    .el-image {
+        opacity: 0; // 隐藏el-image，只显示background-image
     }
 }
+// 轮播内容悬浮层
+.carousel-content {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    transform: translateY(-50%);
+    z-index: 10;
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
 
+    .carousel-title {
+        font-size: 48px;
+        font-weight: bold;
+        margin-bottom: 24px;
+    }
+
+    .carousel-subtitle {
+        font-size: 18px;
+        margin-bottom: 36px;
+        opacity: 0.9;
+    }
+
+    .carousel-btn {
+        padding: 12px 32px;
+        font-size: 16px;
+        background: #165dff;
+        border: none;
+    }
+}
 .business-card {
     .business-icon {
         width: 80px;
